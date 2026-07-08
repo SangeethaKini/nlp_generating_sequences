@@ -45,7 +45,7 @@ def preprocess_dataset(dataset):
 
     sentences = sentences_array_from_dataset(dataset)
     filtered_sentences = tokenize_and_filter_sentences_by_length(sentences, min_length=5, max_length=15)
-    validation_sentences, train_sentences = splitting_sentences_into_train_and_validation(filtered_sentences, validation_split=0.1)
+    train_sentences, validation_sentences = splitting_sentences_into_train_and_validation(filtered_sentences, validation_split=0.1)
     index_to_word_list, word_to_index_dict = build_vocabulary(train_sentences + validation_sentences, vocab_size=10000)
 
     return train_sentences, validation_sentences, word_to_index_dict, index_to_word_list
