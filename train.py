@@ -1,17 +1,13 @@
 #train.py
+# Manisha Shekhar Mirje - 402237
 
 import torch
 import torch.nn.functional as F
+import random
 
-from dataset import make_batches
 from model import kl_divergence
 
 # Hyperparameters
-# Sizes are much smaller than the paper's (the paper uses bigger LSTMs / hidden sizes and train on more data)
-# with below values training finishes in a reasonable time on BookCorpus subset
-EMBED_DIM = 128
-HIDDEN_DIM = 256
-LATENT_DIM = 32 #size of z - the paper's "continuous space"
 BATCH_SIZE = 32
 EPOCHS = 30
 LEARNING_RATE = 1e-3
@@ -20,6 +16,37 @@ WORD_DROPOUT_PROB = 0.25
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 CHECKPOINT_PATH = "vae_checkpoint.pt"
 # 
+
+def make_batches(sentences, word_to_index, batch_size, pad_idx, bos_idx, eos_idx, unk_idx, shuffle=True):
+    """
+    Turns a list of tokenized sentences into padded (encoder_input, decoder_input, target) tensors.
+    Kept inline here (instead of a separate dataset.py) so train.py is self-contained.
+    """
+    indices = list(range(len(sentences)))
+    if shuffle:
+        random.shuffle(indices)
+ 
+    for start in range(0, len(indices), batch_size):
+        batch_idx = indices[start:start + batch_size]
+        encoded = []
+        for i in batch_idx:
+            ids = [word_to_index.get(t, unk_idx) for t in sentences[i]]
+            encoder_input = ids + [eos_idx]        # w1 ... wn <eos>
+            decoder_input = [bos_idx] + ids        # <bos> w1 ... wn
+            target = ids + [eos_idx]               # w1 ... wn <eos>
+            encoded.append((encoder_input, decoder_input, target))
+ 
+        max_len = max(len(e[0]) for e in encoded)
+ 
+        def pad(seq):
+            return seq + [pad_idx] * (max_len - len(seq))
+ 
+        encoder_batch = torch.tensor([pad(e[0]) for e in encoded], dtype=torch.long)
+        decoder_batch = torch.tensor([pad(e[1]) for e in encoded], dtype=torch.long)
+        target_batch = torch.tensor([pad(e[2]) for e in encoded], dtype=torch.long)
+ 
+        yield encoder_batch, decoder_batch, target_batch
+
 
 def apply_word_dropout(decoder_input, prob, unk_idx, pad_idx):
     """
@@ -42,11 +69,14 @@ def kl_weight_schedule(epoch, total_epochs):
     KL annealing delays the KL penalty so the decoder learns to use the latent vector
     The KL weight gradually increases from 0 to 1 during training. This helps prevent posterior collapse
     """
-    kl_weight = 1.0, epoch / (total_epochs * 0.5)
-    return min(kl_weight)
+    # increase KL weight from 0 to 1 over first half of training
+    if total_epochs <= 0:
+        return 1.0
+    weight = epoch / (total_epochs * 0.5)
+    return float(min(1.0, max(0.0, weight)))
 
 
-def train(model, train_sentences, word_to_index, index_to_word, pad_idx, unk_idx):
+def train(model, train_sentences, word_to_index, index_to_word, pad_idx, unk_idx, bos_idx, eos_idx):
     
     model = model.to(DEVICE)
     # optimizer 
@@ -62,11 +92,7 @@ def train(model, train_sentences, word_to_index, index_to_word, pad_idx, unk_idx
 
         total_recon, total_kl, n_batches = 0.0, 0.0, 0
 
-        for encoder_input, decoder_input, target in make_batches(train_sentences, word_to_index, BATCH_SIZE, pad_idx,
-                "<bos>",
-                "<eos>",
-                "<unk>",
-        ):
+        for encoder_input, decoder_input, target in make_batches(train_sentences, word_to_index, BATCH_SIZE, pad_idx, bos_idx, eos_idx, unk_idx,):
             encoder_input = encoder_input.to(DEVICE)
             decoder_input = decoder_input.to(DEVICE)
             target = target.to(DEVICE)
