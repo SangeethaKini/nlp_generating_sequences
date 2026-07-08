@@ -1,0 +1,6 @@
+{
+    "name":"nlp-generating-sequences",
+    "build": {
+        "dockerfile":"./Dockerfile"
+    }
+}
