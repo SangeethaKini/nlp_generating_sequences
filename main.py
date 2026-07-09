@@ -17,3 +17,11 @@ if __name__ == "__main__":
     #train sentences and validation sentences created ready for encoding and decoding,  word_to_index_dict for encoding and index_to_word_list for decoding created
 
 #Javeria Raja 344234 - end
+
+#Sangeetha Kamalaksha Kini 392545 
+
+        #Call encoder here 
+
+        #
+
+#Sangeetha Kamalaksha Kini 392525
