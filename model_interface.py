@@ -150,5 +150,8 @@ def vae_loss(logits, batch, mu, logvar, kl_weight=1.0, pad_id=0):
     ) / B
     kl = kl_divergence(mu, logvar).mean()
     return recon + kl_weight * kl, {"recon": recon.item(), "kl": kl.item()}
+<<<<<<< HEAD
 
 # Sri Vyshnavi Madala 393232
+=======
+>>>>>>> 3487052 (Add files via upload)
