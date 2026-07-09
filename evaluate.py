@@ -9,8 +9,9 @@ import matplotlib.pyplot as plt
 from models.encoder import Encoder
 from models.decoder import Decoder
 from models.vae import reparameterize, kl_divergence
+from models.losses import vae_loss, kl_annealing_weight
 from model_interface import (
-    VocabAdapter, vae_loss, build_batch,
+    VocabAdapter, build_batch,
     PAD, BOS, EOS, UNK,
 )
 
