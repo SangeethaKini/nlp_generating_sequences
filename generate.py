@@ -109,3 +109,5 @@ def inputless_sample(decoder, vocab, z_dim, n=5, max_len=30, device="cpu"):
     trained. Provided as a named function for clarity in evaluate.py."""
     z = torch.randn(n, z_dim, device=device)
     return greedy_decode(decoder, z, vocab, max_len)
+
+#Sri Vyshnvi Madala 393232
