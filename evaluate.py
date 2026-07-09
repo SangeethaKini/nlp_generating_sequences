@@ -10,7 +10,10 @@ from models.encoder import Encoder
 from models.decoder import Decoder
 from models.vae import reparameterize, kl_divergence
 from models.losses import vae_loss, kl_annealing_weight
+<<<<<<< HEAD
 from models.train import train
+=======
+>>>>>>> 09ea602 (Import kl_annealing_weight from models.losses)
 from model_interface import (
     VocabAdapter, build_batch,
     PAD, BOS, EOS, UNK,
