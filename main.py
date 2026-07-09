@@ -1,15 +1,16 @@
 import torch
 from preprocessing_data import (load_dataset_from_hf, preprocess_dataset, PADDING_TOKEN, UNKNOWN_TOKEN, BEGINNING_TOKEN, END_TOKEN)
 from train import train
-from encoder import Encoder
-from decoder import Decoder
+from models.decoder import Decoder, ids_to_sentences
+from models.vae import reparameterize, kl_divergence
+from models.encoder import Encoder
 
-# Hyperparameters
+#Hyperparameters
 EMBED_DIM = 128
 HIDDEN_DIM = 256
 LATENT_DIM = 32
 
-# Training parameters
+#Training parameters
 BATCH_SIZE = 32
 EPOCHS = 30
 LEARNING_RATE = 1e-3
@@ -17,6 +18,8 @@ WORD_DROPOUT_PROB = 0.25
 CHECKPOINT_PATH = "vae_checkpoint.pt"
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+
+EMBED_DIM, HIDDEN_DIM, LATENT_DIM, PAD_IDX = 128, 256, 32, 0
 
 if __name__ == "__main__":
 

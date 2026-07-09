@@ -4,7 +4,7 @@
 import torch
 import random
 
-from vae import reparameterize
+from models.vae import reparameterize, kl_divergence
 from losses import (kl_annealing_weight, word_dropout, vae_loss)
 
 

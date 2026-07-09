@@ -1,4 +1,4 @@
-# Kavya - Encoder for sentence VAE
+# Kavya Itikala Gopichand - 401540 - Encoder for sentence VAE
 
 import torch
 from torch import nn
