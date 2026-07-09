@@ -37,3 +37,4 @@ def word_dropout(input_seq, dropout_prob, unk_idx, pad_idx=None):
 # Total loss = reconstruction loss + KL weight * KL loss
 def vae_loss(recon, kl, kl_weight):
     return recon + kl_weight * kl
+# losses.py - Madhumitha Mahendiran (391379)
