@@ -6,10 +6,14 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 # ---- INTEGRATION BLOCK -------------------
+from models.encoder import Encoder
+from models.decoder import Decoder
+from models.vae import reparameterize, kl_divergence
 from model_interface import (
-    VocabAdapter, SentenceVAE, reparameterize, vae_loss, build_batch,
+    VocabAdapter, vae_loss, build_batch,
     PAD, BOS, EOS, UNK,
 )
+
 import generate as G
 
 SEED = 7
@@ -162,3 +166,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+# Sri Vyshnavi Madala 393232
