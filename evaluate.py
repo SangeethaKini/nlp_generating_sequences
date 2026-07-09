@@ -10,18 +10,13 @@ from model_interface import (
     VocabAdapter, SentenceVAE, reparameterize, vae_loss, build_batch,
     PAD, BOS, EOS, UNK,
 )
-import generate_vyshnavi as G
-
+import generate as G
 
 SEED = 7
 random.seed(SEED); torch.manual_seed(SEED)
 OUT = os.path.join(os.path.dirname(__file__), "outputs")
 os.makedirs(OUT, exist_ok=True)
-
-
-
 # Load data: try the real repo pipeline, else fall back to a toy corpus.
-
 def load_real_data(limit=2000):
     """Uses Javeria's preprocessing_data.py if it (and its deps) are available."""
     from preprocessing_data import load_dataset_from_hf, preprocess_dataset
@@ -29,7 +24,6 @@ def load_real_data(limit=2000):
     train, val, word_to_index, index_to_word = preprocess_dataset(ds)
     vocab = VocabAdapter(index_to_word, word_to_index)
     return train, val, vocab
-
 
 def load_toy_data(n=600):
     subj = ["i", "he", "she", "they", "we"]
@@ -43,7 +37,6 @@ def load_toy_data(n=600):
     vocab = VocabAdapter.from_sentences(sents)
     return sents, sents[: n // 10], vocab
 
-
 def get_data():
     try:
         train, val, vocab = load_real_data()
@@ -54,8 +47,6 @@ def get_data():
         train, _, vocab = load_toy_data()
         return train, vocab
 
-
-
 # Batching over a list of token-lists
 
 def batches(sentences, vocab, bs=64, device="cpu"):
@@ -64,14 +55,10 @@ def batches(sentences, vocab, bs=64, device="cpu"):
     for i in range(0, len(data), bs):
         yield build_batch(data[i:i + bs], vocab, device=device)
 
-
-
 # KL annealing (Person 6) - linear warmup, Section 3.1
 
 def kl_weight_at(step, warmup=300):
     return min(1.0, step / warmup)
-
-
 
 # Compact training loop (stands in for Person 5's train.py)
 
@@ -171,8 +158,7 @@ def main():
                                 device=device):
         print("  •", s)
 
-    banner("Done - all Vyshnavi experiments ran")
-
+    banner("Done")
 
 if __name__ == "__main__":
     main()
