@@ -1,4 +1,4 @@
-# losses.py - Madhumitha
+# losses.py - Madhumitha Mahendiran (391379)
 import torch
 from torch import nn
 
