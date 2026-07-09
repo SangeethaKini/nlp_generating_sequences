@@ -187,8 +187,12 @@ def main():
 if __name__ == "__main__":
     main()
 <<<<<<< HEAD
+<<<<<<< HEAD
 # Sri Vyshnavi Madala 393232
 =======
 
 #Sri vyshnavi Madala 393232
 >>>>>>> 3758a89 (Add author comment to evaluate.py)
+=======
+# Sri Vyshnavi Madala 393232
+>>>>>>> 6776516 (Add files via upload)
