@@ -10,30 +10,15 @@ from models.encoder import Encoder
 from models.decoder import Decoder
 from models.vae import reparameterize, kl_divergence
 from models.losses import vae_loss, kl_annealing_weight
-<<<<<<< HEAD
-<<<<<<< HEAD
 from models.train import train
-=======
->>>>>>> 09ea602 (Import kl_annealing_weight from models.losses)
-=======
 from models.train import train
->>>>>>> 4038d69 (Import train function from models.train)
 from model_interface import (
     VocabAdapter, build_batch,
     PAD, BOS, EOS, UNK,
 )
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 
-<<<<<<< HEAD
-=======
->>>>>>> c3a17f9 (Refactor import statement and clean up whitespace)
-=======
 
->>>>>>> 76cc3f2 (Import Encoder, Decoder, and VAE functions)
-=======
->>>>>>> 4038d69 (Import train function from models.train)
 import generate as G
 
 SEED = 7
@@ -186,13 +171,5 @@ def main():
 
 if __name__ == "__main__":
     main()
-<<<<<<< HEAD
-<<<<<<< HEAD
-# Sri Vyshnavi Madala 393232
-=======
 
-#Sri vyshnavi Madala 393232
->>>>>>> 3758a89 (Add author comment to evaluate.py)
-=======
 # Sri Vyshnavi Madala 393232
->>>>>>> 6776516 (Add files via upload)
