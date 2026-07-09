@@ -16,10 +16,14 @@ from model_interface import (
     PAD, BOS, EOS, UNK,
 )
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 =======
 >>>>>>> c3a17f9 (Refactor import statement and clean up whitespace)
+=======
+
+>>>>>>> 76cc3f2 (Import Encoder, Decoder, and VAE functions)
 import generate as G
 
 SEED = 7
