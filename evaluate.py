@@ -6,10 +6,12 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 # ---- INTEGRATION BLOCK -------------------
+from models.vae import reparameterize, kl_divergence
 from model_interface import (
-    VocabAdapter, SentenceVAE, reparameterize, vae_loss, build_batch,
+    VocabAdapter, SentenceVAE, vae_loss, build_batch,
     PAD, BOS, EOS, UNK,
 )
+
 import generate as G
 
 SEED = 7
