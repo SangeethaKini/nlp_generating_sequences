@@ -34,7 +34,7 @@ def interpolate(z1: torch.Tensor, z2: torch.Tensor, steps: int = 10) -> torch.Te
     z2 = z2.view(-1)
     alphas = torch.linspace(0, 1, steps, device=z1.device).unsqueeze(1)  # (steps, 1)
     z_interp = (1 - alphas) * z1.unsqueeze(0) + alphas * z2.unsqueeze(0)
-    return z_interp
+    return z_interp  #Needs to be decoded to get the sentences from the latent space. This should be done in the decoder.py file
 
 class LatentSpace(nn.Module):
     def __init__(self):
