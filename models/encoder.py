@@ -1,4 +1,5 @@
-# Kavya - Encoder for sentence VAE
+# Kavya Itikala Gopichand 401540
+# Encoder for sentence VAE
 
 import torch
 from torch import nn
@@ -25,3 +26,5 @@ class Encoder(nn.Module):
         logvar = self.logvar(h)
 
         return mu, logvar
+
+# Kavya Itikala Gopichand 401540
