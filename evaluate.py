@@ -15,8 +15,11 @@ from model_interface import (
     VocabAdapter, build_batch,
     PAD, BOS, EOS, UNK,
 )
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> c3a17f9 (Refactor import statement and clean up whitespace)
 import generate as G
 
 SEED = 7
