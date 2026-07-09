@@ -12,6 +12,11 @@ def reconstruction_loss(logits, targets, pad_idx):
     loss_fn = nn.CrossEntropyLoss(ignore_index=pad_idx)
     return loss_fn(logits_flat, targets_flat)
 
+#Regularization
+def kl_loss(mu, logvar): 
+    kl = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp(), dim=1)
+    return kl.mean()
+
  # Start with a small KL weight and increase it slowly.
 def kl_annealing_weight(step, total_anneal_steps=10000):
     if total_anneal_steps <= 0:
