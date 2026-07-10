@@ -48,6 +48,8 @@ def train(model_enc, model_dec, train_sentences, word_to_index, index_to_word,
     # optimizer 
     optimizer = torch.optim.Adam(list(model_enc.parameters()) + list(model_dec.parameters()), lr=lr)
     vocab_size = len(index_to_word)
+              history = {"recon": [], "kl": [], "kl_weight": []}
+
 
     #Training loop - Epoch loop
     for epoch in range(epochs):
@@ -93,9 +95,15 @@ def train(model_enc, model_dec, train_sentences, word_to_index, index_to_word,
 
         # Log reconstruction loss, KL loss, and KL weight separately
         print(f"Epoch {epoch + 1}/{epochs} | recon {total_recon / n_batches:.3f} | kl {total_kl / n_batches:.3f} | kl_weight {kl_weight:.2f}")
+                history["recon"].append(total_recon / n_batches)
+                    history["kl"].append(total_kl / n_batches)
+                    history["kl_weight"].append(kl_weight)
+
 
     # save checkpoint;save the model and vocabulary for sentence generation
     torch.save({"encoder_state": model_enc.state_dict(), "decoder_state": model_dec.state_dict(), "word_to_index": word_to_index, "index_to_word": index_to_word}, checkpoint_path)
     print(f"Saved checkpoint to {checkpoint_path}")
+    return history
+
 
     #print("Model saved.")
