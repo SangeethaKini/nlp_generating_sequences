@@ -104,11 +104,11 @@ def main():
     banner("Training standard Sentence-VAE (word_keep=0.5, KL annealing)")
     encoder = Encoder(vocab_size=len(vocab), emb_size=64, hidden_size=128, latent_size=16, pad_idx=vocab.pad_id)
     decoder = Decoder(vocab_size=len(vocab), emb_size=64, hidden_size=128, latent_size=16, pad_idx=vocab.pad_id)
+    plot_path = os.path.join(OUT, "loss_curves.png")
     hist = train(encoder, decoder, sents, vocab.stoi, vocab.itos, 
              vocab.pad_id, vocab.unk_id, vocab.bos_id, vocab.eos_id,
              batch_size=64, epochs=8, lr=2e-3, word_dropout_prob=0.5,
              checkpoint_path=plot_path, device=device)
-    plot_path = os.path.join(OUT, "loss_curves.png")
     plot_losses(hist, plot_path)
     print(f"final recon={hist['recon'][-1]:.3f}  final KL={hist['kl'][-1]:.3f}")
     print(f"saved loss plot -> {plot_path}")
