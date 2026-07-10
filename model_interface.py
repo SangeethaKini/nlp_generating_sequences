@@ -71,7 +71,7 @@ def build_batch(sentences, vocab, max_len=17, device="cpu"):
     ids = [vocab.encode(s)[:max_len] for s in sentences]
     T = max(len(x) for x in ids)
     padded = [x + [vocab.pad_id] * (T - len(x)) for x in ids]
-    return {"input": torch.tensor(padded, dtype=torch.long, device=device)}
+    return torch.tensor(padded, dtype=torch.long, device=device)
 
 def vae_loss(logits, target, mu, logvar, pad_idx, kl_weight):
     from losses import reconstruction_loss, kl_loss
