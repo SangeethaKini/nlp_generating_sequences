@@ -71,7 +71,7 @@ class Decoder(nn.Module):
 
 
 def ids_to_sentences(token_ids, index_to_word_list, eos_idx):
-    # token_ids: (batch_size, seq_len) tensor of predicted word indices, e.g. from Decoder.generate()
+    # token_ids: (batch_size, seq_len) tensor of predicted word indices
     # Converts each row back into a space-joined sentence, stopping at <eos>
     sentences = []
     for row in token_ids.tolist():
