@@ -114,7 +114,7 @@ def main():
     plot_losses(hist, checkpoint_path)
         print(f"final recon={hist['recon'][-1]:.3f}  final KL={hist['kl'][-1]:.3f}")
         print(f"saved loss plot -> {checkpoint_path}")
-    probe, _ = probe_batch(vocab, device)
+        probe, _ = probe_batch(vocab, device)
 
     banner("Experiment 1 - Reconstruction (Table 7)")
     rec = G.reconstruct(encoder, decoder, reparameterize, probe,
