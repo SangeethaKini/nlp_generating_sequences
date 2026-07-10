@@ -70,29 +70,6 @@ def batches(sentences, vocab, bs=64, device="cpu"):
 def kl_weight_at(step, warmup=300):
     return min(1.0, step / warmup)
 
-# Compact training loop (stands in for Person 5's train.py)
-
-def train(model, sents, vocab, epochs=8, lr=2e-3, word_keep=0.5,
-          anneal=True, device="cpu"):
-    opt = torch.optim.Adam(model.parameters(), lr=lr)
-    history = {"recon": [], "kl": [], "kl_weight": []}
-    step = 0
-    for _ in range(epochs):
-        model.train()
-        for batch in batches(sents, vocab, device=device):
-            kw = kl_weight_at(step) if anneal else 1.0
-            logits, mu, logvar, _ = model(batch, word_keep=word_keep)
-            loss, parts = vae_loss(logits, batch, mu, logvar,
-                                   kl_weight=kw, pad_id=vocab.pad_id)
-            opt.zero_grad(); loss.backward()
-            torch.nn.utils.clip_grad_norm_(model.parameters(), 5.0)
-            opt.step()
-            history["recon"].append(parts["recon"])
-            history["kl"].append(parts["kl"])
-            history["kl_weight"].append(kw)
-            step += 1
-    return history
-
 def plot_losses(history, path):
     steps = range(len(history["recon"]))
     fig, ax1 = plt.subplots(figsize=(8, 4.5))
