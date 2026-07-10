@@ -12,8 +12,8 @@ import matplotlib.pyplot as plt
 from models.encoder import Encoder
 from models.decoder import Decoder
 from models.vae import reparameterize, kl_divergence
-from models.losses import vae_loss, kl_annealing_weight
-from models.train import train
+from losses import vae_loss, kl_annealing_weight
+from train import train
 from models.train import train
 from model_interface import (
     VocabAdapter, build_batch,
