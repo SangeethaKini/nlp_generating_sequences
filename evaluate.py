@@ -1,3 +1,6 @@
+# evaluate.py
+#Sri Vyshnavi Madala 393232
+
 from __future__ import annotations
 import os
 import random
@@ -16,8 +19,6 @@ from model_interface import (
     VocabAdapter, build_batch,
     PAD, BOS, EOS, UNK,
 )
-
-
 
 import generate as G
 
@@ -92,7 +93,6 @@ def train(model, sents, vocab, epochs=8, lr=2e-3, word_keep=0.5,
             step += 1
     return history
 
-
 def plot_losses(history, path):
     steps = range(len(history["recon"]))
     fig, ax1 = plt.subplots(figsize=(8, 4.5))
@@ -109,17 +109,14 @@ def plot_losses(history, path):
     ax1.set_title("Vyshnavi: Sentence-VAE training (KL annealing + word dropout)")
     fig.tight_layout(); fig.savefig(path, dpi=130); plt.close(fig)
 
-
 def banner(t):
     print("\n" + "=" * 68 + f"\n {t}\n" + "=" * 68)
-
 
 def probe_batch(vocab, device):
     """Two real-looking short sentences to probe reconstruction/homotopy/impute."""
     s1 = ["she", "went", "to", "the", "door", "quietly"]
     s2 = ["they", "ran", "down", "the", "street", "again"]
     return build_batch([s1, s2], vocab, device=device), (s1, s2)
-
 
 def main():
     device = "cpu"
@@ -173,5 +170,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-# Sri Vyshnavi Madala 393232
