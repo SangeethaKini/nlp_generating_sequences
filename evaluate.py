@@ -128,7 +128,8 @@ def main():
           f"eos={vocab.eos_id} unk={vocab.unk_id}")
 
     banner("Training standard Sentence-VAE (word_keep=0.5, KL annealing)")
-    model = SentenceVAE(vocab, emb_dim=64, hid_dim=128, z_dim=16).to(device)
+    encoder = Encoder(vocab_size=len(vocab), emb_size=64, hidden_size=128, latent_size=16, pad_idx=vocab.pad_id)
+    decoder = Decoder(vocab_size=len(vocab), emb_size=64, hidden_size=128, latent_size=16, pad_idx=vocab.pad_id)
     hist = train(model, sents, vocab, epochs=8, word_keep=0.5, device=device)
     plot_path = os.path.join(OUT, "loss_curves.png")
     plot_losses(hist, plot_path)
@@ -138,32 +139,33 @@ def main():
     probe, _ = probe_batch(vocab, device)
 
     banner("Experiment 1 - Reconstruction (Table 7)")
-    rec = G.reconstruct(model.encoder, model.decoder, reparameterize, probe,
+    rec = G.reconstruct(encoder, decoder, reparameterize, probe,
                         vocab, n_samples=2)
     for k, v in rec.items():
         print(f"  [{k:7}] {v}")
 
     banner("Experiment 2 - Samples from the Gaussian prior (Table 5)")
-    for s in G.sample_prior(model.decoder, vocab, model.z_dim, n=5, device=device):
+    for s in G.sample_prior(decoder, vocab, model.z_dim, n=5, device=device):
         print("  •", s)
 
     banner("Experiment 3 - Missing-word imputation, final ~20% (Table 3)")
-    for r in G.impute(model.encoder, model.decoder, reparameterize, probe,
+    for r in G.impute(encoder, decoder, reparameterize, probe,
                       vocab, frac=0.34):
         print(f"  observed: {r['observed']}")
         print(f"     true : {r['true']}")
         print(f"    imputed: {r['imputed']}\n")
 
     banner("Experiment 4 - Latent interpolation / homotopy (Tables 6 & 8)")
-    for t, line in G.homotopy(model.encoder, model.decoder, probe, vocab, steps=7):
+    for t, line in G.homotopy(encoder, decoder, probe, vocab, steps=7):
         print(f"  t={t:<4} {line}")
 
     banner("Experiment 5 - Inputless decoder, word_keep=0 (Section 4 / Table 5)")
-    model_il = SentenceVAE(vocab, emb_dim=64, hid_dim=128, z_dim=16).to(device)
-    hist_il = train(model_il, sents, vocab, epochs=8, word_keep=0.0, device=device)
+    encoder_il = Encoder(vocab_size=len(vocab), emb_size=64, hidden_size=128, latent_size=16, pad_idx=vocab.pad_id).to(device)
+    decoder_il = Decoder(vocab_size=len(vocab), emb_size=64, hidden_size=128, latent_size=16, pad_idx=vocab.pad_id).to(device)
+    hist_il = train(encoder_il, decoder_il, sents, vocab, epochs=8, word_keep=0.0, device=device)
     print(f"  inputless final KL={hist_il['kl'][-1]:.3f} "
           f"(expect HIGHER than standard {hist['kl'][-1]:.3f}: decoder forced to use z)")
-    for s in G.inputless_sample(model_il.decoder, vocab, model_il.z_dim, n=5,
+    for s in G.inputless_sample(decoder_il, vocab, 16, n=5,
                                 device=device):
         print("  •", s)
 
