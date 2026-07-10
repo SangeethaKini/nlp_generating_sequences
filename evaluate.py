@@ -111,10 +111,10 @@ def main():
              vocab.pad_id, vocab.unk_id, vocab.bos_id, vocab.eos_id,
              batch_size=64, epochs=8, lr=2e-3, word_dropout_prob=0.5,
              checkpoint_path=checkpoint_path, device=device)
-    plot_losses(hist, checkpoint_path)
-        print(f"final recon={hist['recon'][-1]:.3f}  final KL={hist['kl'][-1]:.3f}")
-        print(f"saved loss plot -> {checkpoint_path}")
-        probe, _ = probe_batch(vocab, device)
+    #plot_losses(hist, checkpoint_path)
+        #print(f"final recon={hist['recon'][-1]:.3f}  final KL={hist['kl'][-1]:.3f}")
+        #print(f"saved loss plot -> {checkpoint_path}")
+    probe, _ = probe_batch(vocab, device)
 
     banner("Experiment 1 - Reconstruction (Table 7)")
     rec = G.reconstruct(encoder, decoder, reparameterize, probe,
