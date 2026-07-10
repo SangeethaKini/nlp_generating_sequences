@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 import os
+import torch
 import random
 import matplotlib
 matplotlib.use("Agg")
