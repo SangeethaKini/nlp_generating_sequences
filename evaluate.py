@@ -142,8 +142,8 @@ def main():
                 vocab.pad_id, vocab.unk_id, vocab.bos_id, vocab.eos_id,
                 batch_size=64, epochs=8, lr=2e-3, word_dropout_prob=0.0,
                 checkpoint_path=plot_path, device=device)
-    print(f"  inputless final KL={hist_il['kl'][-1]:.3f} "
-          f"(expect HIGHER than standard {hist['kl'][-1]:.3f}: decoder forced to use z)")
+    #print(f"  inputless final KL={hist_il['kl'][-1]:.3f} "
+    #    f"(expect HIGHER than standard {hist['kl'][-1]:.3f}: decoder forced to use z)")
     for s in G.inputless_sample(decoder_il, vocab, 16, n=5,
                                 device=device):
         print("  •", s)
