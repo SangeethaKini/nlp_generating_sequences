@@ -106,11 +106,11 @@ def main():
     banner("Training standard Sentence-VAE (word_keep=0.5, KL annealing)")
     encoder = Encoder(vocab_size=len(vocab), emb_size=64, hidden_size=128, latent_size=16, pad_idx=vocab.pad_id)
     decoder = Decoder(vocab_size=len(vocab), emb_size=64, hidden_size=128, latent_size=16, pad_idx=vocab.pad_id)
-    checkpoint_path = os.path.join(OUT, "checkpoint.pt",device=device)
+    checkpoint_path = os.path.join(OUT, "checkpoint.pt")
     hist = train(encoder, decoder, sents, vocab.stoi, vocab.itos, 
              vocab.pad_id, vocab.unk_id, vocab.bos_id, vocab.eos_id,
              batch_size=64, epochs=8, lr=2e-3, word_dropout_prob=0.5,
-             checkpoint_path=plot_path, device=device)
+             checkpoint_path=checkpoint_path, device=device)
     #plot_losses(hist, plot_path)
     #print(f"final recon={hist['recon'][-1]:.3f}  final KL={hist['kl'][-1]:.3f}")
     #print(f"saved loss plot -> {plot_path}")
@@ -143,7 +143,8 @@ def main():
     hist_il = train(encoder_il, decoder_il, sents, vocab.stoi, vocab.itos,
                 vocab.pad_id, vocab.unk_id, vocab.bos_id, vocab.eos_id,
                 batch_size=64, epochs=8, lr=2e-3, word_dropout_prob=1.0,
-                checkpoint_path=os.path.join(OUT, checkpoint_il.pt"), device=device)
+                checkpoint_path=os.path.join(OUT, "checkpoint_il.pt"),device=device)
+
     #print(f"  inputless final KL={hist_il['kl'][-1]:.3f} "
     #    f"(expect HIGHER than standard {hist['kl'][-1]:.3f}: decoder forced to use z)")
     for s in G.inputless_sample(decoder_il, vocab, 16, n=5,
