@@ -1,5 +1,7 @@
 # evaluate.py
 #Sri Vyshnavi Madala 393232
+# To run: python evaluate.py
+# Dependencies: torch, matplotlib, datasets (installed via pip)
 
 from __future__ import annotations
 import os
