@@ -27,18 +27,18 @@ class Decoder(nn.Module):
         prediction = self.output(out)
 
         return prediction
-
+    
     def init_state(self, z):
-    h = torch.tanh(self.latent_to_hidden(z)).unsqueeze(0)
-    c = torch.tanh(self.latent_to_cell(z)).unsqueeze(0)
-    return h, c
+        h = torch.tanh(self.latent_to_hidden(z)).unsqueeze(0)
+        c = torch.tanh(self.latent_to_cell(z)).unsqueeze(0)
+        return h, c
     
     def step(self, prev_token, state):
-    h, c = state
-    x = self.embedding(prev_token).unsqueeze(1)
-    out, (h, c) = self.lstm(x, (h, c))
-    logits = self.output(out.squeeze(1))
-    return logits, (h, c)
+        h, c = state
+        x = self.embedding(prev_token).unsqueeze(1)
+        out, (h, c) = self.lstm(x, (h, c))
+        logits = self.output(out.squeeze(1))
+        return logits, (h, c)
 
 
     @torch.no_grad()
