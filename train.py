@@ -48,7 +48,7 @@ def train(model_enc, model_dec, train_sentences, word_to_index, index_to_word,
     # optimizer 
     optimizer = torch.optim.Adam(list(model_enc.parameters()) + list(model_dec.parameters()), lr=lr)
     vocab_size = len(index_to_word)
-              history = {"recon": [], "kl": [], "kl_weight": []}
+        history = {"recon": [], "kl": [], "kl_weight": []}
 
 
     #Training loop - Epoch loop
