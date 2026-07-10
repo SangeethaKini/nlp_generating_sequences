@@ -98,14 +98,4 @@ def train(model_enc, model_dec, train_sentences, word_to_index, index_to_word,
     torch.save({"encoder_state": model_enc.state_dict(), "decoder_state": model_dec.state_dict(), "word_to_index": word_to_index, "index_to_word": index_to_word}, checkpoint_path)
     print(f"Saved checkpoint to {checkpoint_path}")
 
-history = {"recon": [], "kl": [], "kl_weight": []}
-for epoch in range(epochs):
-    ...
-    history["recon"].append(total_recon / n_batches)
-    history["kl"].append(total_kl / n_batches)
-    history["kl_weight"].append(kl_weight)
-
-return history
-
-
     #print("Model saved.")
