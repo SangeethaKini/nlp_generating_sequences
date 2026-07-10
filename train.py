@@ -8,7 +8,7 @@ from models.vae import reparameterize
 from models.encoder import Encoder
 from models.decoder import Decoder
 from losses import (kl_annealing_weight, word_dropout, vae_loss)
-
+from model_interface import vae_loss
 
 def make_batches(sentences, word_to_index, batch_size, pad_idx, bos_idx, eos_idx, unk_idx, shuffle=True):
     """
