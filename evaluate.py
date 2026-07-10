@@ -14,7 +14,6 @@ from models.decoder import Decoder
 from models.vae import reparameterize, kl_divergence
 from losses import vae_loss, kl_annealing_weight
 from train import train
-from models.train import train
 from model_interface import (
     VocabAdapter, build_batch,
     PAD, BOS, EOS, UNK,
