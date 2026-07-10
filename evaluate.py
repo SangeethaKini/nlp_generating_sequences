@@ -130,7 +130,7 @@ def main():
     banner("Training standard Sentence-VAE (word_keep=0.5, KL annealing)")
     encoder = Encoder(vocab_size=len(vocab), emb_size=64, hidden_size=128, latent_size=16, pad_idx=vocab.pad_id)
     decoder = Decoder(vocab_size=len(vocab), emb_size=64, hidden_size=128, latent_size=16, pad_idx=vocab.pad_id)
-    hist = train(model, sents, vocab, epochs=8, word_keep=0.5, device=device)
+    hist = train(encoder, decoder, sents, vocab, epochs=8, word_keep=0.5, device=device)
     plot_path = os.path.join(OUT, "loss_curves.png")
     plot_losses(hist, plot_path)
     print(f"final recon={hist['recon'][-1]:.3f}  final KL={hist['kl'][-1]:.3f}")
@@ -145,7 +145,7 @@ def main():
         print(f"  [{k:7}] {v}")
 
     banner("Experiment 2 - Samples from the Gaussian prior (Table 5)")
-    for s in G.sample_prior(decoder, vocab, model.z_dim, n=5, device=device):
+    for s in G.sample_prior(decoder, vocab, 16, n=5, device=device):
         print("  •", s)
 
     banner("Experiment 3 - Missing-word imputation, final ~20% (Table 3)")
@@ -162,7 +162,7 @@ def main():
     banner("Experiment 5 - Inputless decoder, word_keep=0 (Section 4 / Table 5)")
     encoder_il = Encoder(vocab_size=len(vocab), emb_size=64, hidden_size=128, latent_size=16, pad_idx=vocab.pad_id).to(device)
     decoder_il = Decoder(vocab_size=len(vocab), emb_size=64, hidden_size=128, latent_size=16, pad_idx=vocab.pad_id).to(device)
-    hist_il = train(encoder_il, decoder_il, sents, vocab, epochs=8, word_keep=0.0, device=device)
+    hist_il = train(encoder_il, decoder_il, sents, vocab, epochs=8, word_keep=0.0)
     print(f"  inputless final KL={hist_il['kl'][-1]:.3f} "
           f"(expect HIGHER than standard {hist['kl'][-1]:.3f}: decoder forced to use z)")
     for s in G.inputless_sample(decoder_il, vocab, 16, n=5,
